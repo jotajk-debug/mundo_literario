@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Literários - Sua plataforma de histórias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-50: #faf5ff;
+            --primary-100: #f3e8ff;
+            --primary-200: #e9d5ff;
+            --primary-300: #d8b4fe;
+            --primary-400: #c084fc;
+            --primary-500: #a855f7;
+            --primary-600: #9333ea;
+            --primary-700: #7c3aed;
+            --primary-800: #6b21a8;
+            --primary-900: #581c87;
+            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            --gradient-secondary: linear-gradient(135deg, #a855f7 0%, #f472b6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--primary-200);
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-700);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-500);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-500);
+            color: var(--primary-500);
+        }
+
+        .btn-sm {
+            padding: 0.25rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--primary-50);
+            padding: 2rem 1rem;
+            border-right: 1px solid var(--primary-200);
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section h3 {
+            color: var(--primary-700);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-links {
+            list-style: none;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-links a {
+            text-decoration: none;
+            color: var(--primary-600);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-links a:hover, .sidebar-links a.active {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Stories Grid */
+        .stories-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary-800);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-300);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .story-cover {
+            height: 200px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: gold;
+            color: #333;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .story-content {
+            padding: 1.5rem;
+        }
+
+        .story-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-800);
+        }
+
+        .story-author {
+            color: var(--primary-600);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .story-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .story-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: var(--primary-100);
+            color: var(--primary-700);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .story-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary-500);
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Profile Page */
+        .profile-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-500);
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 1rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Editor */
+        .editor-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--primary-200);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 0.5rem;
+            border: 1px solid var(--primary-200);
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--primary-50);
+        }
+
+        .editor-content {
+            min-height: 400px;
+            border: 1px solid var(--primary-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .editor-stats {
+            display: flex;
+            gap: 2rem;
+            color: var(--primary-600);
+            font-size: 0.9rem;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-500);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-700);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--primary-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* Payment */
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid var(--primary-200);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        /* Notifications */
+        .notification-badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .content-area {
+                order: 1;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+
+        .mt-2 {
+            margin-top: 2rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">Mundo Literários</div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar histórias, autores...">
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="#"><i class="fas fa-compass"></i> Descobrir</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Biblioteca</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <button class="btn btn-outline" onclick="openModal('loginModal')">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+                <button class="btn btn-primary" onclick="openModal('registerModal')">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Explorar</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" class="active"><i class="fas fa-fire"></i> Em Alta</a></li>
+                        <li><a href="#"><i class="fas fa-clock"></i> Recentes</a></li>
+                        <li><a href="#"><i class="fas fa-star"></i> Recomendados</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Categorias</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#"><i class="fas fa-heart"></i> Romance</a></li>
+                        <li><a href="#"><i class="fas fa-dragon"></i> Fantasia</a></li>
+                        <li><a href="#"><i class="fas fa-ghost"></i> Terror</a></li>
+                        <li><a href="#"><i class="fas fa-user-secret"></i> Mistério</a></li>
+                        <li><a href="#"><i class="fas fa-rocket"></i> Ficção Científica</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Minhas Histórias</h3>
+                    <ul class="sidebar-links">
+                        <li><a href="#" onclick="showSection('myStories')"><i class="fas fa-book"></i> Publicadas</a></li>
+                        <li><a href="#" onclick="showSection('editorSection')"><i class="fas fa-edit"></i> Escrever</a></li>
+                        <li><a href="#"><i class="fas fa-chart-bar"></i> Estatísticas</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Home Section -->
+                <section id="homeSection">
+                    <div class="hero">
+                        <h1>Descubra Mundos Extraordinários</h1>
+                        <p>Leia, escreva e compartilhe suas histórias em uma comunidade apaixonada por literatura</p>
+                        <button class="btn btn-primary" onclick="showSection('editorSection')">
+                            <i class="fas fa-pen"></i> Começar a Escrever
+                        </button>
+                    </div>
+
+                    <!-- Featured Stories -->
+                    <div class="stories-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Histórias em Destaque</h2>
+                            <div class="filters">
+                                <button class="filter-btn active" onclick="filterStories('all')">Todas</button>
+                                <button class="filter-btn" onclick="filterStories('free')">Gratuitas</button>
+                                <button class="filter-btn" onclick="filterStories('premium')">Premium</button>
+                            </div>
+                        </div>
+
+                        <div class="stories-grid" id="storiesGrid">
+                            <!-- Stories will be loaded here by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="stories-section">
+                        <h2 class="section-title">Por Categoria</h2>
+                        <div class="stories-grid">
+                            <!-- Category cards will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Editor Section -->
+                <section id="editorSection" class="hidden">
+                    <div class="section-header">
+                        <h2 class="section-title">Editor de Histórias</h2>
+                        <div>
+                            <button class="btn btn-outline" onclick="saveStory()">
+                                <i class="fas fa-save"></i> Salvar Rascunho
+                            </button>
+                            <button class="btn btn-primary" onclick="openModal('publishModal')">
+                                <i class="fas fa-upload"></i> Publicar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editor-container">
+                        <input type="text" class="form-group" id="storyTitle" placeholder="Título da história..." style="border: none; font-size: 1.5rem; font-weight: bold; padding: 0; margin-bottom: 1rem;">
+                        
+                        <div class="editor-toolbar">
+                            <button class="toolbar-btn" onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                            <button class="toolbar-btn" onclick="formatText('justifyRight')"><i class="fas fa-align-right"></i></button>
+                        </div>
+
+                        <div class="editor-content" id="editorContent" contenteditable="true">
+                            <p>Era uma vez...</p>
+                        </div>
+
+                        <div class="editor-stats">
+                            <span id="wordCount">Palavras: 0</span>
+                            <span id="charCount">Caracteres: 0</span>
+                            <span id="readingTime">Tempo de leitura: 0min</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Stories Section -->
+                <section id="myStories" class="hidden">
+                    <div class="section-header">
+                        <h2 class="section-title">Minhas Histórias</h2>
+                        <button class="btn btn-primary" onclick="showSection('editorSection')">
+                            <i class="fas fa-plus"></i> Nova História
+                        </button>
+                    </div>
+
+                    <div class="stories-grid" id="myStoriesGrid">
+                        <!-- User's stories will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Profile Section -->
+                <section id="profileSection" class="hidden">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h1 id="profileName">Nome do Usuário</h1>
+                        <p id="profileBio">Bio do usuário aparecerá aqui</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="stat-number" id="storiesCount">0</div>
+                                <div>Histórias</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-number" id="followersCount">0</div>
+                                <div>Seguidores</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-number" id="followingCount">0</div>
+                                <div>Seguindo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stories-section">
+                        <h2 class="section-title">Minhas Publicações</h2>
+                        <div class="stories-grid" id="profileStoriesGrid">
+                            <!-- Profile stories will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('loginModal')">×</button>
+            <h2 class="text-center">Entrar no Mundo Literários</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Sua senha" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('loginModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+            </form>
+            <p class="text-center mt-2">
+                Não tem conta? <a href="#" onclick="closeModal('loginModal'); openModal('registerModal')" style="color: var(--primary-500);">Cadastre-se</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('registerModal')">×</button>
+            <h2 class="text-center">Junte-se ao Mundo Literários</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" id="registerName" placeholder="Seu nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="registerPassword" placeholder="Crie uma senha" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar senha</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirme sua senha" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('registerModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Publish Modal -->
+    <div class="modal" id="publishModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('publishModal')">×</button>
+            <h2 class="text-center">Publicar História</h2>
+            <form id="publishForm">
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="storyCategory" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="romance">Romance</option>
+                        <option value="fantasy">Fantasia</option>
+                        <option value="horror">Terror</option>
+                        <option value="mystery">Mistério</option>
+                        <option value="scifi">Ficção Científica</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tags (separadas por vírgula)</label>
+                    <input type="text" id="storyTags" placeholder="amor, aventura, fantasia...">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="storyDescription" placeholder="Descreva sua história..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de publicação</label>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('free')">
+                            <i class="fas fa-book-open fa-2x"></i>
+                            <div>Grátis</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('premium')">
+                            <i class="fas fa-crown fa-2x"></i>
+                            <div>Premium<br><small>R$ 2,99</small></div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="paymentMethod" value="free" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('publishModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="publishBtn">
+                        <span class="btn-text">Publicar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('paymentModal')">×</button>
+            <h2 class="text-center">Finalizar Publicação</h2>
+            <div class="form-group">
+                <label>Selecione o método de pagamento</label>
+                <div class="payment-methods">
+                    <div class="payment-method selected" onclick="selectPaymentType('pix')">
+                        <i class="fas fa-qrcode fa-2x"></i>
+                        <div>PIX</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentType('credit')">
+                        <i class="fas fa-credit-card fa-2x"></i>
+                        <div>Cartão de Crédito</div>
+                    </div>
+                </div>
+                <input type="hidden" id="paymentType" value="pix" required>
+            </div>
+            <div id="pixSection">
+                <div class="form-group text-center">
+                    <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin: 1rem 0;">
+                        <div class="loading" style="margin: 0 auto 1rem;"></div>
+                        <p>Gerando QR Code PIX...</p>
+                    </div>
+                </div>
+            </div>
+            <div id="creditCardSection" class="hidden">
+                <div class="form-group">
+                    <label>Número do cartão</label>
+                    <input type="text" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="form-group" style="display: flex; gap: 1rem;">
+                    <div style="flex: 1;">
+                        <label>Validade</label>
+                        <input type="text" placeholder="MM/AA">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>CVV</label>
+                        <input type="text" placeholder="123">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nome no cartão</label>
+                    <input type="text" placeholder="Seu nome">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('paymentModal')">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="processPayment()">
+                    Confirmar Pagamento
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data
+        const sampleStories = [
+            {
+                id: 1,
+                title: "O Jardim das Borboletas",
+                author: "Maria Silva",
+                excerpt: "Uma história sobre amor e descobertas em um jardim mágico onde as borboletas guardam segredos milenares...",
+                category: "romance",
+                tags: ["romance", "magia", "amor"],
+                likes: 1247,
+                comments: 89,
+                views: 5432,
+                isPremium: false,
+                cover: "📚"
+            },
+            {
+                id: 2,
+                title: "Noite Estrelada",
+                author: "João Santos",
+                excerpt: "Uma aventura cósmica através de galáxias desconhecidas, onde um jovem astronauta descobre civilizações perdidas...",
+                category: "scifi",
+                tags: ["ficção científica", "espaço", "aventura"],
+                likes: 2156,
+                comments: 156,
+                views: 8765,
+                isPremium: true,
+                cover: "🌙"
+            },
+            {
+                id: 3,
+                title: "O Castelo de Cristal",
+                author: "Ana Costa",
+                excerpt: "Um reino encantado onde os segredos são guardados em cristais mágicos e a princesa precisa salvar seu povo...",
+                category: "fantasy",
+                tags: ["fantasia", "aventura", "reino"],
+                likes: 3421,
+                comments: 234,
+                views: 12108,
+                isPremium: false,
+                cover: "🏰"
+            }
+        ];
+
+        const sampleUser = {
+            name: "Ana Writer",
+            bio: "Escritora apaixonada por histórias de fantasia e romance. Amante de livros e café ☕",
+            stories: 12,
+            followers: 456,
+            following: 123
+        };
+
+        // State Management
+        let currentUser = null;
+        let userStories = [];
+        let currentStory = null;
+        let selectedPaymentMethod = 'free';
+
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStories();
+            setupEventListeners();
+            updateEditorStats();
+        });
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Form submissions
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            document.getElementById('publishForm').addEventListener('submit', handlePublish);
+            
+            // Editor events
+            document.getElementById('editorContent').addEventListener('input', updateEditorStats);
+            document.getElementById('storyTitle').addEventListener('input', updateEditorStats);
+            
+            // Search
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            document.getElementById('paymentMethod').value = method;
+        }
+
+        function selectPaymentType(type) {
+            document.querySelectorAll('#paymentModal .payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            document.getElementById('paymentType').value = type;
+
+            if (type === 'pix') {
+                document.getElementById('pixSection').classList.remove('hidden');
+                document.getElementById('creditCardSection').classList.add('hidden');
+            } else {
+                document.getElementById('pixSection').classList.add('hidden');
+                document.getElementById('creditCardSection').classList.remove('hidden');
+            }
+        }
+
+        // Section Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('main > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Load section-specific data
+            if (sectionId === 'myStories') {
+                loadUserStories();
+            } else if (sectionId === 'profileSection') {
+                loadProfile();
+            }
+        }
+
+        // Story Management
+        function loadStories() {
+            const grid = document.getElementById('storiesGrid');
+            grid.innerHTML = '';
+
+            sampleStories.forEach(story => {
+                const storyElement = createStoryCard(story);
+                grid.appendChild(storyElement);
+            });
+        }
+
+        function loadUserStories() {
+            const grid = document.getElementById('myStoriesGrid');
+            grid.innerHTML = '';
+
+            userStories.forEach(story => {
+                const storyElement = createStoryCard(story);
+                grid.appendChild(storyElement);
+            });
+
+            if (userStories.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center" style="grid-column: 1 / -1; padding: 3rem;">
+                        <i class="fas fa-book" style="font-size: 3rem; color: var(--primary-300); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary-600); margin-bottom: 1rem;">Nenhuma história publicada</h3>
+                        <p style="color: var(--primary-500); margin-bottom: 2rem;">Comece a escrever sua primeira história!</p>
+                        <button class="btn btn-primary" onclick="showSection('editorSection')">
+                            <i class="fas fa-pen"></i> Escrever Primeira História
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function createStoryCard(story) {
+            const card = document.createElement('div');
+            card.className = 'story-card';
+            card.innerHTML = `
+                <div class="story-cover">
+                    ${story.cover}
+                    ${story.isPremium ? '<div class="premium-badge">PREMIUM</div>' : ''}
+                </div>
+                <div class="story-content">
+                    <h3 class="story-title">${story.title}</h3>
+                    <div class="story-author">
+                        <i class="fas fa-user"></i>
+                        <span>${story.author}</span>
+                    </div>
+                    <p class="story-excerpt">${story.excerpt}</p>
+                    <div class="story-tags">
+                        ${story.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    </div>
+                    <div class="story-stats">
+                        <span class="stat"><i class="fas fa-heart"></i> ${story.likes}</span>
+                        <span class="stat"><i class="fas fa-comment"></i> ${story.comments}</span>
+                        <span class="stat"><i class="fas fa-eye"></i> ${story.views}</span>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => openStory(story.id));
+            return card;
+        }
+
+        function filterStories(filter) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // In a real app, this would filter from API
+            loadStories(); // Reload with current filter (simulated)
+        }
+
+        // Editor Functions
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('editorContent').focus();
+        }
+
+        function updateEditorStats() {
+            const content = document.getElementById('editorContent').textContent;
+            const title = document.getElementById('storyTitle').value;
+            
+            const words = (content + ' ' + title).trim().split(/\s+/).filter(word => word.length > 0).length;
+            const characters = (content + title).length;
+            const readingTime = Math.ceil(words / 200);
+            
+            document.getElementById('wordCount').textContent = `Palavras: ${words}`;
+            document.getElementById('charCount').textContent = `Caracteres: ${characters}`;
+            document.getElementById('readingTime').textContent = `Tempo de leitura: ${readingTime}min`;
+        }
+
+        function saveStory() {
+            const title = document.getElementById('storyTitle').value;
+            const content = document.getElementById('editorContent').innerHTML;
+            
+            if (!title.trim()) {
+                alert('Por favor, adicione um título à sua história.');
+                return;
+            }
+
+            currentStory = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                savedAt: new Date().toLocaleString()
+            };
+
+            alert('Rascunho salvo com sucesso!');
+        }
+
+        // Form Handlers
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simulate login
+            currentUser = {
+                name: email.split('@')[0],
+                email: email
+            };
+
+            closeModal('loginModal');
+            alert('Login realizado com sucesso!');
+            updateUIForLoggedInUser();
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            currentUser = {
+                name: name,
+                email: email
+            };
+
+            closeModal('registerModal');
+            alert('Cadastro realizado com sucesso!');
+            updateUIForLoggedInUser();
+        }
+
+        function handlePublish(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                alert('Por favor, faça login para publicar histórias.');
+                openModal('loginModal');
+                return;
+            }
+
+            const title = document.getElementById('storyTitle').value;
+            const content = document.getElementById('editorContent').innerHTML;
+            const category = document.getElementById('storyCategory').value;
+            const tags = document.getElementById('storyTags').value.split(',').map(tag => tag.trim());
+            const description = document.getElementById('storyDescription').value;
+            const isPremium = selectedPaymentMethod === 'premium';
+
+            if (!title.trim() || !content.trim() || !category) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            if (isPremium) {
+                closeModal('publishModal');
+                openModal('paymentModal');
+            } else {
+                publishStory(title, content, category, tags, description, isPremium);
+            }
+        }
+
+        function processPayment() {
+            const paymentType = document.getElementById('paymentType').value;
+            const publishBtn = document.querySelector('#paymentModal .btn-primary');
+            const originalText = publishBtn.innerHTML;
+            
+            publishBtn.innerHTML = '<div class="loading"></div> Processando...';
+            publishBtn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                const title = document.getElementById('storyTitle').value;
+                const content = document.getElementById('editorContent').innerHTML;
+                const category = document.getElementById('storyCategory').value;
+                const tags = document.getElementById('storyTags').value.split(',').map(tag => tag.trim());
+                const description = document.getElementById('storyDescription').value;
+                
+                publishStory(title, content, category, tags, description, true);
+                closeModal('paymentModal');
+                
+                publishBtn.innerHTML = originalText;
+                publishBtn.disabled = false;
+            }, 2000);
+        }
+
+        function publishStory(title, content, category, tags, description, isPremium) {
+            const newStory = {
+                id: Date.now(),
+                title: title,
+                author: currentUser.name,
+                excerpt: description || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+                category: category,
+                tags: tags,
+                likes: 0,
+                comments: 0,
+                views: 0,
+                isPremium: isPremium,
+                cover: isPremium ? '👑' : '📖',
+                publishedAt: new Date().toLocaleString()
+            };
+
+            userStories.unshift(newStory);
+            sampleStories.unshift(newStory);
+
+            alert('História publicada com sucesso!');
+            showSection('myStories');
+            
+            // Reset editor
+            document.getElementById('storyTitle').value = '';
+            document.getElementById('editorContent').innerHTML = '<p>Era uma vez...</p>';
+            updateEditorStats();
+        }
+
+        // Search Functionality
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm.length < 2) {
+                loadStories();
+                return;
+            }
+
+            const filteredStories = sampleStories.filter(story => 
+                story.title.toLowerCase().includes(searchTerm) ||
+                story.author.toLowerCase().includes(searchTerm) ||
+                story.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                story.excerpt.toLowerCase().includes(searchTerm)
+            );
+
+            const grid = document.getElementById('storiesGrid');
+            grid.innerHTML = '';
+
+            if (filteredStories.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center" style="grid-column: 1 / -1; padding: 3rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--primary-300); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary-600);">Nenhuma história encontrada</h3>
+                        <p style="color: var(--primary-500);">Tente usar outros termos de busca</p>
+                    </div>
+                `;
+            } else {
+                filteredStories.forEach(story => {
+                    const storyElement = createStoryCard(story);
+                    grid.appendChild(storyElement);
+                });
+            }
+        }
+
+        // Profile Functions
+        function loadProfile() {
+            document.getElementById('profileName').textContent = currentUser?.name || 'Visitante';
+            document.getElementById('profileBio').textContent = sampleUser.bio;
+            document.getElementById('storiesCount').textContent = userStories.length;
+            document.getElementById('followersCount').textContent = sampleUser.followers;
+            document.getElementById('followingCount').textContent = sampleUser.following;
+
+            const grid = document.getElementById('profileStoriesGrid');
+            grid.innerHTML = '';
+
+            userStories.forEach(story => {
+                const storyElement = createStoryCard(story);
+                grid.appendChild(storyElement);
+            });
+        }
+
+        function openStory(storyId) {
+            const story = sampleStories.find(s => s.id === storyId);
+            if (story) {
+                alert(`Abrindo história: ${story.title}\n\nEm uma implementação real, esta seria uma página dedicada de leitura.`);
+            }
+        }
+
+        function updateUIForLoggedInUser() {
+            document.querySelector('.user-actions').innerHTML = `
+                <button class="btn btn-outline" onclick="showSection('profileSection')">
+                    <i class="fas fa-user"></i> Perfil
+                </button>
+                <button class="btn btn-primary" onclick="showSection('editorSection')">
+                    <i class="fas fa-pen"></i> Escrever
+                </button>
+            `;
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
